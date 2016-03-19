@@ -151,3 +151,13 @@ func (c *Calendar) SetUrl(u string) *Calendar {
 func (c *Calendar) GetUrl() string {
 	return c.url
 }
+
+func (c *Calendar) GetEventsAsMap() map[string]interface{} {
+    slice := make(map[string]interface{})
+    var events []interface{}
+    for i := range c.events {
+        events = append(events, c.events[i].GetMap())
+    }
+    slice["event"] = events
+    return slice
+}

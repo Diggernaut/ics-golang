@@ -108,6 +108,15 @@ func (p *Parser) GetInputChan() chan string {
 	return p.inputChan
 }
 
+func (p *Parser) ParseFromString(iCalContent string) *Calendar {
+    ical := NewCalendar()
+    // split the data into calendar info and events data
+    eventsData, _ := explodeICal(iCalContent)
+    // parse the events and add them to ical
+    p.parseEvents(ical, eventsData)
+    return ical
+}
+
 // returns the chan where will be received events
 func (p *Parser) GetOutputChan() chan *Event {
 	return p.outputChan
@@ -654,3 +663,4 @@ func (p *Parser) parseAttendeeType(attendeeData string) string {
 	}
 	return trimField(result, `(CUTYPE=|;)`)
 }
+

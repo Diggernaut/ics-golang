@@ -238,3 +238,35 @@ func (e *Event) String() string {
 	attendeeCount := len(e.GetAttendees())
 	return fmt.Sprintf("Event(%s) from %s to %s about %s . %d people are invited to it", status, from, to, summ, attendeeCount)
 }
+
+func (e *Event) GetMap() map[string]interface{} {
+    EventMap := make(map[string]interface{})
+    EventMap["start"] = e.start.String()
+    EventMap["end"] = e.end.String()
+    EventMap["created"] = e.created.String()
+    EventMap["modified"] = e.modified.String()
+    EventMap["alarmTime"] = e.alarmTime.String()
+    EventMap["importedId"] = e.importedId
+    EventMap["status"] = e.status
+    EventMap["description"] = e.description
+    EventMap["location"] = e.location
+    EventMap["summary"] = e.summary
+    EventMap["rrule"] = e.rrule
+    EventMap["class"] = e.class
+    EventMap["id"] = e.id
+    EventMap["sequence"] = e.sequence
+    EventMap["wholeDauyEvent"] = e.wholeDayEvent
+    if e.attendees != nil {
+        for i := range e.attendees {
+            var att []interface{}
+            att = append(att, e.attendees[i].email, e.attendees[i].cutype, e.attendees[i].status, e.attendees[i].name, e.attendees[i].role)
+            EventMap["attendees"+string(i)] = att
+        }
+    }
+    if e.organizer != nil {
+        var att []interface{}
+        att = append(att, e.organizer.cutype, e.organizer.email, e.organizer.name, e.organizer.role, e.organizer.status)
+        EventMap["organizer"] = att
+    }
+    return EventMap
+}
